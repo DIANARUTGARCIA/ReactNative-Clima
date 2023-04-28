@@ -1,29 +1,33 @@
 import React from 'react';
 
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Keyboard, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import Formulario from './components/Formulario';
 
 function App() {
+
+  const ocultarTeclado =()=>{
+      Keyboard.dismiss();
+  }
   return (
+    <TouchableWithoutFeedback onPress={()=> ocultarTeclado()}>
     <View style={styles.app}>
       <View style={styles.contenido}>
         <Formulario />
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  app: {},
-  contenido: {},
+  app: {
+    flex: 1,
+    backgroundColor: '#BCE5FF',
+    justifyContent: 'center',
+  },
+  contenido: {
+    marginHorizontal: '3%',
+  },
 });
 
 export default App;
