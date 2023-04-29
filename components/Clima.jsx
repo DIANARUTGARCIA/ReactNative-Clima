@@ -1,9 +1,11 @@
 import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, View, Image} from 'react-native';
 
 const Clima = ({resultado}) => {
   const {name, main} = resultado;
   if (!name) return null;
+  const kelvin = 273.15;
+
   return (
     <View style={styles.clima}>
       <Text style={[styles.texto, styles.actual]}>
@@ -12,7 +14,7 @@ const Clima = ({resultado}) => {
         <Image
           style={{width: 66, height: 58}}
           source={{
-            url: `http://openweathermap.org/img/w${resultado.weather[0].icon}.png`,
+            uri: `https://openweathermap.org/img/w/${resultado.weather[0].icon}.png`,
           }}
         />
       </Text>
@@ -46,8 +48,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   temperatura: {
-    fontSize: 60,
-    fontWeight: 'normal',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   temperaturas: {
     flexDirection: 'row',

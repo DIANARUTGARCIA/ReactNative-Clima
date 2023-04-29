@@ -14,11 +14,12 @@ const Formulario = ({busqueda, guardarBusqueda, guardarConsultar}) => {
   const {pais, ciudad} = busqueda;
 
   const consultarClima = () => {
-    if (pais.trim() === '' && ciudad.trim() === '') {
+    if (pais.trim() === '' || ciudad.trim() === '') {
       mostrarAlerta();
       return;
     }
-    //Si los camos estan llenos si se puede consultar
+
+    // consultar la api
     guardarConsultar(true);
   };
 
@@ -31,7 +32,7 @@ const Formulario = ({busqueda, guardarBusqueda, guardarConsultar}) => {
 
   const animacionEntrada = () => {
     Animated.spring(animacionboton, {
-      toValue: 0.75,
+      toValue: 0.8,
       useNativeDriver: true,
     }).start();
   };
@@ -66,18 +67,18 @@ const Formulario = ({busqueda, guardarBusqueda, guardarConsultar}) => {
               onValueChange={pais => guardarBusqueda({...busqueda, pais})}
               style={{height: 115, backgroundColor: '#fff', borderRadius: 7}}
             >
-              <Picker.Item label="-Seleccione un País-" value={''} />
-              <Picker.Item label="Estados Unidos" value={'US'} />
-              <Picker.Item label="Mexico" value={'MX'} />
-              <Picker.Item label="Argentina" value={'AR'} />
-              <Picker.Item label="Colombia" value={'CO'} />
-              <Picker.Item label="Costa Rica" value={'CR'} />
-              <Picker.Item label="Honduras" value={'HN'} />
-              <Picker.Item label="Peru" value={'PE'} />
+              <Picker.Item label="-- Seleccione un país --" value="" />
+              <Picker.Item label="Estados Unidos" value="US" />
+              <Picker.Item label="Honduras" value="HN" />
+              <Picker.Item label="México" value="MX" />
+              <Picker.Item label="Argentina" value="AR" />
+              <Picker.Item label="Colombia" value="CO" />
+              <Picker.Item label="Costa Rica" value="CR" />
+              <Picker.Item label="España" value="ES" />
+              <Picker.Item label="Perú" value="PE" />
             </Picker>
           </View>
           <TouchableWithoutFeedback
-            delayPressIn
             onPressIn={() => animacionEntrada()}
             onPressOut={() => animacionSalida()}
             onPress={() => consultarClima()}
