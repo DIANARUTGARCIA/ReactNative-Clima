@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   TextInput,
   View,
@@ -6,39 +6,64 @@ import {
   TouchableWithoutFeedback,
   Text,
   Animated,
+  Alert,
 } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-const Formulario = () => {
+const Formulario = ({busqueda, guardarBusqueda, guardarConsultar}) => {
+  const {pais, ciudad} = busqueda;
 
- const [animacionboton] = useState(new Animated.Value(1));
+  const consultarClima = () => {
+    if (pais.trim() === '' && ciudad.trim() === '') {
+      mostrarAlerta();
+      return;
+    }
+    //Si los camos estan llenos si se puede consultar
+    guardarConsultar(true);
+  };
 
- const animacionEntrada =()=>{
-   Animated.spring(animacionboton,{
-    toValue:.9,
-     useNativeDriver: true
-   }).start();
- }
+  const mostrarAlerta = () => {
+    Alert.alert('Error', 'Todos los campos son obligatorios', [
+      {text: 'Entendido'},
+    ]);
+  };
+  const [animacionboton] = useState(new Animated.Value(1));
 
- const animacionSalida =()=>{
+  const animacionEntrada = () => {
+    Animated.spring(animacionboton, {
+      toValue: 0.75,
+      useNativeDriver: true,
+    }).start();
+  };
 
- }
-  
- const estiloAnimacion ={
-    transform: [{scale:animacionboton}]
- }
+  const animacionSalida = () => {
+    Animated.spring(animacionboton, {
+      toValue: 1,
+      friction: 4,
+      tension: 30,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const estiloAnimacion = {
+    transform: [{scale: animacionboton}],
+  };
 
   return (
     <>
       <View style={styles.formulario}>
         <View>
           <TextInput
+            value={ciudad}
             style={styles.input}
+            onChangeText={ciudad => guardarBusqueda({...busqueda, ciudad})}
             placeholder="Ciudad"
             placeholderTextColor={'#666'}
           />
           <View>
             <Picker
+              selectedValue={pais}
+              onValueChange={pais => guardarBusqueda({...busqueda, pais})}
               style={{height: 115, backgroundColor: '#fff', borderRadius: 7}}
             >
               <Picker.Item label="-Seleccione un País-" value={''} />
@@ -52,10 +77,12 @@ const Formulario = () => {
             </Picker>
           </View>
           <TouchableWithoutFeedback
-           onPress={()=>animacionEntrada()}
-           onPressOut={()=>animacionSalida()}
+            delayPressIn
+            onPressIn={() => animacionEntrada()}
+            onPressOut={() => animacionSalida()}
+            onPress={() => consultarClima()}
           >
-            <Animated.View style={[styles.btnBuscar,estiloAnimacion]}>
+            <Animated.View style={[styles.btnBuscar, estiloAnimacion]}>
               <Text style={styles.textoBuscar}>Buscar Clima </Text>
             </Animated.View>
           </TouchableWithoutFeedback>
